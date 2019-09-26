@@ -10,6 +10,6 @@
     "CORSCredentials": false  
   },
   "ConnectionStrings": {
-    "SQLConnectionString": "sqlclient-connection-string"
+    "SQLConnectionString": "Server=tcp:sfnetlab.database.windows.net,1433;Initial Catalog=ticketingtool;Persist Security Info=False;User ID=testuser;Password=Factory2020;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
   }
 }
