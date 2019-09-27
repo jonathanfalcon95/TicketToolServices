@@ -44,7 +44,7 @@ namespace TicketToolServices.Repository
         {
             return new Ticket()
             {
-                ticketId = (int)reader["ticketId"],
+                ticketID = (int)reader["ticketId"],
                 customerID = reader["customerID"].ToString(),
                 subject = reader["subject"].ToString(),
                 description = reader["description"].ToString(),
@@ -57,12 +57,12 @@ namespace TicketToolServices.Repository
                 IDFacebookProfile = reader["priority"].ToString(),
                 agentID = reader["priority"].ToString(),
                 groupID = reader["priority"].ToString(),
-                creationDate = reader["creationDate"].ToString("dd/mm/yy HH:mm:ss"),
-                expirationDate = reader["expirationDate"].ToString('2019-08-05T15:02:29.393'),
+                /*creationDate = reader["creationDate"].ToString().datetime,
+                expirationDate = reader["expirationDate"].ToString("yyyy-MM-dd'T'HH:mm:ss.SSS"),
                 resolvedDate = reader["resolvedDate"].ToString('2019-08-05T15:02:29.393'),
                 closedDate = reader["closedDate"].ToString('2019-08-05T15:02:29.393'),
                 lastUpdateDate = reader["lastUpdateDate"].ToString('2019-08-05T15:02:29.393'),
-                fistResponseRequestDate = reader["fistResponseRequestDate"].ToString('2019-08-05T15:02:29.393'),
+                fistResponseRequestDate = reader["fistResponseRequestDate"].ToString('2019-08-05T15:02:29.393'),*/
                 agentInteractions = (int)reader["agentInteractions"],
                 customerIntearction = (int)reader["customerIntearction"],
                 resolutionStatus = reader["resolutionStatus"].ToString(),
@@ -78,18 +78,18 @@ namespace TicketToolServices.Repository
                 tmHoursWeek1 = (float)reader["tmHoursWeek1"],
                 tmHoursWeek2 = (float)reader["tmHoursWeek2"],
                 tmHoursWeek3 = (float)reader["tmHoursWeek3"],
-                tmHoursWeek4 = (float)reader["tmHoursWeek3"],
-                progressWeek1 = (float)reader["tmHoursWeek3"],
-                progressWeek2 = (float)reader["tmHoursWeek3"],
+                tmHoursWeek4 = (float)reader["tmHoursWeek4"],
+                progressWeek1 = (float)reader["rogressWeek1"],
+                progressWeek2 = (float)reader["rogressWeek2"],
                 progressWeek3 = (float)reader["tmHoursWeek3"],
-                progressWeek4 = (float)reader["tmHoursWeek3"],
-                billingMonth = reader["billingMonth"].ToString("dd/mm/yy HH:mm:ss"),
+                progressWeek4 = (float)reader["progressWeek4"],
+               /* billingMonth = reader["billingMonth"].ToString("dd/mm/yy HH:mm:ss"),
                 totalBillingHours = (float)reader["totalBillingHours"],
                 totalProgress = (float)reader["totalProgress"],
                 estimatedStartDate = reader["estimatedStartDate"].ToString("dd/mm/yy HH:mm:ss"),
                 estimatedEndDate = reader["estimatedEndDate"].ToString("dd/mm/yy HH:mm:ss"),
                 realStartDate = reader["realStartDate"].ToString("dd/mm/yy HH:mm:ss"),
-                realEndDate = reader["realEndDate"].ToString("dd/mm/yy HH:mm:ss"),
+                realEndDate = reader["realEndDate"].ToString("dd/mm/yy HH:mm:ss"),*/
                 estimatedHourAgent = (float)reader["estimatedHourAgent"],
 
             };
@@ -104,7 +104,7 @@ namespace TicketToolServices.Repository
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@ticketId", Id));
-                    cmd.Parameters.Add(new SqlParameter("@ticketName", ticket.ticketName));
+                  //cmd.Parameters.Add(new SqlParameter("@ticketName", ticket.ticketName));
                     cmd.Parameters.AddWithValue("@Query", 2);
                     await sql.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
