@@ -7,27 +7,79 @@ using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Collections.Generic;
+using TicketToolServices.Models;
+using TicketToolServices.Repository;
 
 namespace TicketToolServices.Controllers
 {
-    class FunctionTicket
+    public static class Function1
     {
-        [FunctionName("FunctionTicket")]
-        public static async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req,
-            ILogger log)
+        private const string urlConversations = "https://tmconsulting.freshdesk.com/api/v2/tickets";
+        //URL Tickets
+        private const string urlTickets = "https://tmconsulting.freshdesk.com/api/v2/tickets";
+
+        //Inicio Function
+        [FunctionName("Function1")]
+        public static void Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req, ILogger log)
+
         {
-            log.LogInformation("C# HTTPP trigger function processed a request.");
 
-            string name = req.Query["name"];
+            //InstanciaHttpClient de Tickets
+            HttpClient clientTickets = new HttpClient();
 
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            dynamic data = JsonConvert.DeserializeObject(requestBody);
-            name = name ?? data?.name;
+            //AsignacionDeURL Tickets
+            clientTickets.BaseAddress = new Uri(urlTickets);
 
-            return name != null
-                ? (ActionResult)new OkObjectResult($"Hello, {name}")
-                : new BadRequestObjectResult("Please pass a name on the query string or in the request body");
+            //Credenciales del API de FreshDesk
+            string yourusername = "UNGq0cadwojfirXm6U7o";
+            string yourpwd = "X";
+
+            //Authorization al API
+
+
+            clientTickets.DefaultRequestHeaders.Authorization =
+              new System.Net.Http.Headers.AuthenticationHeaderValue(
+                  "Basic", Convert.ToBase64String(
+                      System.Text.ASCIIEncoding.ASCII.GetBytes(
+                         $"{yourusername}:{yourpwd}")));
+
+
+
+            clientTickets.DefaultRequestHeaders.Accept.Add(
+            new MediaTypeWithQualityHeaderValue("application/json"));
+
+            // List data response.
+            HttpResponseMessage responseTickets = clientTickets.GetAsync(urlTickets).Result;
+            if (responseTickets.IsSuccessStatusCode)
+            {
+                var dataObjects = responseTickets.Content.ReadAsAsync<IEnumerable<Tickets>>().Result;
+                {
+                    foreach (var item in dataObjects)
+                    {
+                        var tickets = new Tickets()
+                        {
+
+                            id = item.id
+
+                        };
+
+
+                        //TicketRepository.Tickets(Tickets);
+
+                        Console.WriteLine(tickets.id);
+
+
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("{0} ({1})", (int)responseTickets.StatusCode, responseTickets.ReasonPhrase);
+            }
         }
     }
 }
+
