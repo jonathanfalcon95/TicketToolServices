@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -14,6 +15,11 @@ using TicketToolServices.Models;
 using static TicketToolServices.Models.Agent;
 
 using System.Linq;
+=======
+using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Logging;
+using System;
+>>>>>>> 4849b6bd690cc9ed194eca44e7a96b950e8b90af
 
 namespace TicketToolServices
 {
