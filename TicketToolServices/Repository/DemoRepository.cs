@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace TicketToolServices.Repository
 {
-    class TicketRepository
+    class DemoRepository
     {
 
         private static object MapToActivities(SqlDataReader reader)
@@ -16,8 +16,8 @@ namespace TicketToolServices.Repository
             var Model = new
             {
 
-                id = reader["ticketID"].ToString(),
-                subject = reader["subject"].ToString(),
+                subjet = reader["agentID"].ToString(),
+                description = reader["agentDescription"].ToString(),
 
 
 
@@ -34,7 +34,7 @@ namespace TicketToolServices.Repository
             using (SqlConnection conn = new SqlConnection(str))
             {
                 await conn.OpenAsync();
-                var text = "Select * From ticketID";
+                var text = "Select * From Agent";
 
 
                 using (SqlCommand cmd = new SqlCommand(text, conn))
@@ -59,9 +59,9 @@ namespace TicketToolServices.Repository
             }
 
 
-
+         
         }
-
+       
 
     }
 }

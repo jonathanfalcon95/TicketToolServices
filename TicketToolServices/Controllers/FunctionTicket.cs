@@ -23,7 +23,7 @@ namespace TicketToolServices.Controllers
 
         //Inicio Function
         [FunctionName("Function1")]
-        public static void Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req, ILogger log)
+        public static void Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req, ILogger log)
 
         {
 
@@ -63,6 +63,7 @@ namespace TicketToolServices.Controllers
                         {
 
                             id = item.id
+
 
                         };
 
