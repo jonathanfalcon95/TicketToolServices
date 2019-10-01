@@ -15,70 +15,50 @@ using TicketToolServices.Repository;
 
 namespace TicketToolServices.Controllers
 {
-    public static class Function1
-    {
-        private const string urlConversations = "https://tmconsulting.freshdesk.com/api/v2/tickets";
-        //URL Tickets
-        private const string urlTickets = "https://tmconsulting.freshdesk.com/api/v2/tickets";
-
+    public static class FunctionTickets
+    {   
+     
         //Inicio Function
         [FunctionName("Function1")]
-        public static void Run([HttpTrigger(AuthorizationLevel.Function, "get", Route = null)] HttpRequest req, ILogger log)
+        public static void Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req, ILogger log)
 
         {
 
-            //InstanciaHttpClient de Tickets
-            HttpClient clientTickets = new HttpClient();
-
-            //AsignacionDeURL Tickets
-            clientTickets.BaseAddress = new Uri(urlTickets);
-
-            //Credenciales del API de FreshDesk
-            string yourusername = "UNGq0cadwojfirXm6U7o";
-            string yourpwd = "X";
-
-            //Authorization al API
+            var response = Conexion.GetDataApi("/tickets");
 
 
-            clientTickets.DefaultRequestHeaders.Authorization =
-              new System.Net.Http.Headers.AuthenticationHeaderValue(
-                  "Basic", Convert.ToBase64String(
-                      System.Text.ASCIIEncoding.ASCII.GetBytes(
-                         $"{yourusername}:{yourpwd}")));
-
-
-
-            clientTickets.DefaultRequestHeaders.Accept.Add(
-            new MediaTypeWithQualityHeaderValue("application/json"));
-
-            // List data response.
-            HttpResponseMessage responseTickets = clientTickets.GetAsync(urlTickets).Result;
-            if (responseTickets.IsSuccessStatusCode)
+            if (response.IsSuccessStatusCode)
             {
-                var dataObjects = responseTickets.Content.ReadAsAsync<IEnumerable<Tickets>>().Result;
+                var ticketID = response.Content.ReadAsAsync<IEnumerable<dynamic>>().Result;
                 {
-                    foreach (var item in dataObjects)
+                    foreach (var item in ticketID)
                     {
                         var tickets = new Tickets()
                         {
 
-                            id = item.id
-
+                            TicketID = item.id
 
                         };
 
+                        Console.WriteLine(tickets.TicketID);
+                        var response2 = Conexion.GetDataApi("/tickets" + "/" + tickets.TicketID + "?include=stats");
 
-                        //TicketRepository.Tickets(Tickets);
+                        var Data = response2.Content.ReadAsAsync<IEnumerable<dynamic>>().Result;
+                        {
+                            foreach (var itemT in Data)
+                            {
+                                var Datatickets = new Tickets()
+                                {
 
-                        Console.WriteLine(tickets.id);
+                                    description = itemT.description_text
 
+                                };
+                                Console.WriteLine(Datatickets.description);
 
+                            }
+                        }
                     }
                 }
-            }
-            else
-            {
-                Console.WriteLine("{0} ({1})", (int)responseTickets.StatusCode, responseTickets.ReasonPhrase);
             }
         }
     }
