@@ -16,7 +16,7 @@ namespace TicketToolServices.Models
         public List<SFAgentGroup> SFAgentGroup { get; }
         public List<SFAgentGroupDetail> SFAgentGroupDetail { get; }
 
-
+        /*
         public class TaskCreateModelGroups
         {
             public string groupID { get; set; }
@@ -25,6 +25,6 @@ namespace TicketToolServices.Models
         public class TaskCreateUpdateGroups
         {
             public string groupDescription { get; set; }
-        }
+        }*/
     }
 }

@@ -26,8 +26,20 @@ namespace TicketToolServices.Controllers
 
         }
 
+
+        [FunctionName("All_Groups")]
+        public static async Task<ActionResult<object>> GetGroups([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "groups")] HttpRequest req, ILogger log, ExecutionContext context)
+        {
+            return await DemoRepository.GetAllGroups(context);
+        }
+           
+        /*
+        [FunctionName("Get_Groups_Id")]
+        public static async Task<ActionResult<object>> GetGroupsId([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "groups/{id}")] HttpRequest req, ILogger log, ExecutionContext context)
+        {
+            return await DemoRepository.GetGroupId(context);
+        }*/
+
     }
-
-
 
 }
