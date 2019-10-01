@@ -38,10 +38,10 @@ namespace TicketToolServices
 
 
 
-            //InstanciaHttpClient de Tickets
+            //InstanciaHttpClient
             HttpClient client = new HttpClient();
 
-            //AsignacionDeURL Tickets
+            //AsignacionDeURL
             client.BaseAddress = new Uri(url + route);
 
             //Credenciales del API de FreshDesk
