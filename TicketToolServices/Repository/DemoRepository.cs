@@ -26,7 +26,8 @@ namespace TicketToolServices.Repository
         }
         public static async Task<List<object>> SelectAsync(ExecutionContext context)
         {
-
+           
+            
             // log.LogInformation(str.ToString());
             var response = new List<object>();
             var str = Conexion.GetConnectionString(context);
