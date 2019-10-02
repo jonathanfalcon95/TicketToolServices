@@ -1,66 +1,75 @@
-﻿using System;
-using System.IO;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.WebJobs;
 using Microsoft.Azure.WebJobs.Extensions.Http;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
-using System.Net.Http;
-using System.Net.Http.Headers;
+using System;
 using System.Collections.Generic;
-using TicketToolServices.Models;
+using System.Configuration;
+using System.Data.SqlClient;
+using System.IO;
+using System.Net.Http;
+using System.Threading.Tasks;
 using TicketToolServices.Repository;
+using TicketToolServices.Models;
 
 namespace TicketToolServices.Controllers
 {
-    public static class FunctionTickets
-    {   
-     
-        //Inicio Function
-        [FunctionName("Function1")]
-        public static void Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req, ILogger log)
+    public static class Ticketscontroller
+    {
 
-        {
+        [FunctionName("functionTicket")]
+        public static async Task<ActionResult<object>> functionTicket([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "tickets")] HttpRequest req, ILogger log, ExecutionContext context)
+        
+{
+            var response = Conexion.GetDataApi("/tickets?include=requester");
 
-            var response = Conexion.GetDataApi("/tickets");
-
+            var response2 = Conexion.GetDataApi("/tickets?include=description");
 
             if (response.IsSuccessStatusCode)
             {
-                var ticketID = response.Content.ReadAsAsync<IEnumerable<dynamic>>().Result;
+                var tickets_requester = response.Content.ReadAsAsync<IEnumerable<dynamic>>().Result;
                 {
-                    foreach (var item in ticketID)
+                    foreach (var item in tickets_requester)
                     {
-                        var tickets = new Tickets()
+                        var ticketsreq = new Tickets()
                         {
 
-                            TicketID = item.id
+                            TicketID = item.priority
 
                         };
 
-                        Console.WriteLine(tickets.TicketID);
-                        var response2 = Conexion.GetDataApi("/tickets" + "/" + tickets.TicketID + "?include=stats");
-
-                        var Data = response2.Content.ReadAsAsync<IEnumerable<dynamic>>().Result;
+                        Console.WriteLine(ticketsreq.TicketID);
+                        var tickets_description = response2.Content.ReadAsAsync<IEnumerable<dynamic>>().Result;
+                       
                         {
-                            foreach (var itemT in Data)
-                            {
-                                var Datatickets = new Tickets()
-                                {
+                            foreach (var itemT in tickets_description)
+                            {   
 
+                                var ticketsdes = new Tickets()
+                                {
+                                   
                                     description = itemT.description_text
 
                                 };
-                                Console.WriteLine(Datatickets.description);
+
+                                Console.WriteLine(ticketsdes.description);
+
+                                await TicketRepository.Post(ticketsreq, ticketsdes, context);
 
                             }
                         }
-                    }
-                }
+                    
+                
             }
+
+
+            return await TicketRepository.SelectAsync(context);
+
         }
+
     }
 }
 
