@@ -20,10 +20,10 @@ namespace TicketToolServices.Controllers
     public static class Ticketscontroller
     {
 
-        [FunctionName("functionTicket")]
+
+        [FunctionName("Function1")]
         public static async Task<ActionResult<object>> functionTicket([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "tickets")] HttpRequest req, ILogger log, ExecutionContext context)
-        
-{
+        {
             var response = Conexion.GetDataApi("/tickets?include=requester");
 
             var response2 = Conexion.GetDataApi("/tickets?include=description");
@@ -37,7 +37,7 @@ namespace TicketToolServices.Controllers
                         var ticketsreq = new Tickets()
                         {
 
-                            TicketID = item.priority
+                            TicketID = item.type
 
                         };
 
@@ -46,23 +46,21 @@ namespace TicketToolServices.Controllers
                        
                         {
                             foreach (var itemT in tickets_description)
-                            {   
-
+                            {
                                 var ticketsdes = new Tickets()
                                 {
-                                   
+
                                     description = itemT.description_text
 
                                 };
-
                                 Console.WriteLine(ticketsdes.description);
 
-                                await TicketRepository.Post(ticketsreq, ticketsdes, context);
+                              //  await TicketRepository.Post(ticketsreq, ticketsdes, context);
 
                             }
                         }
-                    
-                
+                    }
+                }
             }
 
 
