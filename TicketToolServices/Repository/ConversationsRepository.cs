@@ -40,15 +40,26 @@ namespace TicketToolServices.Repository
             return Model;
         }
 
+        public static string Arrays(List<string> To_Emails)
+        {
+            string cadena = new string("");
+            for (int i = 0; i < To_Emails.Count; i++)
+            {
+                cadena = cadena + Convert.ToString(To_Emails[i]);
+                if (i != To_Emails.Count - 1) { cadena = cadena + ","; }
+            }
+            return cadena;
+        }
         
         public static async Task Post(Conversations conversation, ExecutionContext context)
         {
+
 
             var str = Conexion.GetConnectionString(context);
 
             using (SqlConnection sql = new SqlConnection(str))
             {
-                using (SqlCommand cmd = new SqlCommand("sp_Insert_Conversations", sql))
+                using (SqlCommand cmd = new SqlCommand("dbo.sp_Insert_Conversations", sql))
                 {
                    
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
@@ -62,10 +73,10 @@ namespace TicketToolServices.Repository
                     cmd.Parameters.Add(new SqlParameter("@source", conversation.source));
                     cmd.Parameters.Add(new SqlParameter("@category", conversation.category));
                     cmd.Parameters.Add(new SqlParameter("@ticket_id", conversation.ticket_id));
-                    cmd.Parameters.Add(new SqlParameter("@to_emails", conversation.to_emails.Count > 0 ? conversation.to_emails[0] : ""));
+                    cmd.Parameters.Add(new SqlParameter("@to_emails", ((conversation.to_emails != null) && (conversation.to_emails.Count > 0)) ? conversation.to_emails[0] : ""));
+                    cmd.Parameters.Add(new SqlParameter("@cc_emails", ((conversation.cc_emails != null) && (conversation.cc_emails.Count > 0)) ? conversation.cc_emails[0] : ""));
                     cmd.Parameters.Add(new SqlParameter("@from_email", string.IsNullOrEmpty(conversation.from_email) ? "" : conversation.from_email));
-                    cmd.Parameters.Add(new SqlParameter("@cc_emails", conversation.cc_emails.Count > 0 ? conversation.cc_emails[0] : ""));
-                    cmd.Parameters.Add(new SqlParameter("@bcc_emails", conversation.bcc_emails.Count > 0 ? conversation.bcc_emails[0] : ""));
+                    cmd.Parameters.Add(new SqlParameter("@bcc_emails", ((conversation.bcc_emails != null) && (conversation.bcc_emails.Count > 0)) ? conversation.bcc_emails[0] : ""));
                     cmd.Parameters.Add(new SqlParameter("@email_failure_count", string.IsNullOrEmpty(conversation.email_failure_count)  ? "" : conversation.email_failure_count));
                     cmd.Parameters.Add(new SqlParameter("@created_at", conversation.created_at));
                     cmd.Parameters.Add(new SqlParameter("@updated_at", conversation.updated_at));
