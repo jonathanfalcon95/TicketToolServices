@@ -23,7 +23,7 @@ namespace TicketToolServices.Controllers
         public static void Run([HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = null)] HttpRequest req, ILogger log)
 
         {
-            var response = Conexion.GetDataApi("/tickets?include=description");
+            var response = Conexion.GetDataApi("/tickets?include=requester?tickets?include=description/");
             if (response.IsSuccessStatusCode)
             {
                 var ticketID = response.Content.ReadAsAsync<IEnumerable<dynamic>>().Result;
@@ -41,8 +41,8 @@ namespace TicketToolServices.Controllers
                             type = item.type,
                             companyID = item.company_id,
                             customerID = item.requester_id,
-                            agentID = Convert.ToString(item.responder_id),
-                            groupID = Convert.ToString(item.group_id),
+                            agentID = item.responder_id,
+                            groupID = item.group_id,
                             creationDate = item.custom_fields.created_at, 
                             expirationDate = item.due_by, 
                             lastUpdateDate = item.custom_fields.updated_at,
@@ -50,30 +50,29 @@ namespace TicketToolServices.Controllers
                             projectNumber = item.custom_fields.proyecto,
                             quotationID = item.custom_fields.id_cotizador,
                             sharePointID = item.custom_fields.sharepoint_id,
-                            customerEstimatedHours = Convert.ToString(item.custom_fields.horas_estimadas_por_cliente),
-                            tmHoursWeek1 = Convert.ToString(item.custom_fields.horas_tampm_semana_1),
-                            tmHoursWeek2 = Convert.ToString(item.custom_fields.horas_tampm_semana_2),
-                            tmHoursWeek3 = Convert.ToString(item.custom_fields.horas_tampm_semana_3),
-                            tmHoursWeek4 = Convert.ToString(item.custom_fields.horas_tampm_semana_4),
-                            progressWeek1 = Convert.ToString(item.custom_fields.porcentaje_de_avance),
-                            progressWeek2 = Convert.ToString(item.custom_fields.avance_semana_2),
-                            progressWeek3 = Convert.ToString(item.custom_fields.avance_semana_3),
-                            progressWeek4 = Convert.ToString(item.custom_fields.avance_semana_4),
+                            customerEstimatedHours = item.custom_fields.horas_estimadas_por_cliente,
+                            tmHoursWeek1 = item.custom_fields.horas_tampm_semana_1,
+                            tmHoursWeek2 = item.custom_fields.horas_tampm_semana_2,
+                            tmHoursWeek3 = item.custom_fields.horas_tampm_semana_3,
+                            tmHoursWeek4 = item.custom_fields.horas_tampm_semana_4,
+                            progressWeek1 = item.custom_fields.porcentaje_de_avance,
+                            progressWeek2 = item.custom_fields.avance_semana_2,
+                            progressWeek3 = item.custom_fields.avance_semana_3,
+                            progressWeek4 = item.custom_fields.avance_semana_4,
                             billingMonth = item.custom_fields.mes_facturacin,
-                            totalBillingHours = Convert.ToString(item.custom_fields.horas_tampm_semana_1 + item.custom_fields.horas_tampm_semana_2 + item.custom_fields.horas_tampm_semana_3 + item.custom_fields.horas_tampm_semana_4),
-                            totalProgress = Convert.ToString(item.custom_fields.porcentaje_de_avance + item.custom_fields.avance_semana_2 + item.custom_fields.avance_semana_3 + item.custom_fields.avance_semana_4),
+                            //totalBillingHours = Convert.ToString(item.custom_fields.horas_tampm_semana_1 + item.custom_fields.horas_tampm_semana_2 + item.custom_fields.horas_tampm_semana_3 + item.custom_fields.horas_tampm_semana_4),
+                            //totalProgress = Convert.ToString(item.custom_fields.porcentaje_de_avance + item.custom_fields.avance_semana_2 + item.custom_fields.avance_semana_3 + item.custom_fields.avance_semana_4),
                             estimatedStartDate = item.custom_fields.cf_fecha_de_estimada_inicio,
                             estimatedEndDate = item.custom_fields.cf_fecha_de_estimada_entrega,
                             realStartDate = item.custom_fields.cf_fecha_de_real_inicio,
                             realEndDate = item.custom_fields.cf_fecha_de_real_entrega,
-                            estimatedHourAgent= Convert.ToString(item.custom_fields.cf_horas_estimadas_por_agente)
+                            description = item.description_text,
+                            estimatedHourAgent = Convert.ToString(item.custom_fields.cf_horas_estimadas_por_agente)
                         };
+                        tickets.totalBillingHours = Convert.ToString(tickets.tmHoursWeek1 + tickets.tmHoursWeek2 + tickets.tmHoursWeek3 + tickets.tmHoursWeek4);
+                        tickets.totalProgress = Convert.ToString(tickets.progressWeek1 + tickets.progressWeek2 + tickets.progressWeek3 + tickets.progressWeek4);
 
-                        Console.WriteLine(tickets.TicketID + " " +
-                                          tickets.customerID + " " +
-                                          tickets.status + " " +
-                                          tickets.tmHoursWeek1 + " " 
-                                         );
+                        Console.WriteLine(tickets.billingMonth);
                     }
                 }
             }
@@ -87,10 +86,10 @@ namespace TicketToolServices.Controllers
                     {
                         var tickets = new Tickets()
                         {
-                            description = item.description_text,
+                            description = item.description_text
                         };
 
-                        Console.WriteLine(tickets.description);
+                        //Console.WriteLine(tickets.description);
 
                     }
                 }
@@ -110,7 +109,7 @@ namespace TicketToolServices.Controllers
                             fistResponseRequestDate = item.stats.first_responded_at
                         };
 
-                        Console.WriteLine(tickets.resolvedDate);
+                        //Console.WriteLine(tickets.resolvedDate);
 
                     }
                 }
