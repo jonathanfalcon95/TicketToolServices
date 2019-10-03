@@ -22,6 +22,7 @@ namespace TicketToolServices.Controllers
         [FunctionName("Function1")]
         public static async Task<ActionResult<object>> TicketsFunction([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "tickets")] HttpRequest req, ILogger log, ExecutionContext context)
 
+
         {
             var response = Conexion.GetDataApi("/tickets?include=description");
             if (response.IsSuccessStatusCode)
@@ -32,9 +33,9 @@ namespace TicketToolServices.Controllers
                     {
                         var tickets = new Tickets()
                         {
-
                             TicketID = item.id,
                             subject = item.subject,
+                            description = item.description_text,
                             status = item.status,
                             priority = item.priority,
                             source = item.source,
@@ -43,8 +44,8 @@ namespace TicketToolServices.Controllers
                             customerID = item.requester_id,
                             agentID = item.responder_id,
                             groupID = item.group_id,
-                            creationDate = item.custom_fields.created_at,
-                            expirationDate = item.due_by,
+                            creationDate = item.custom_fields.created_at, 
+                            expirationDate = item.due_by, 
                             lastUpdateDate = item.custom_fields.updated_at,
                             customerCompany = item.custom_fields.cliente,
                             projectNumber = item.custom_fields.proyecto,
@@ -60,13 +61,13 @@ namespace TicketToolServices.Controllers
                             progressWeek3 = item.custom_fields.avance_semana_3,
                             progressWeek4 = item.custom_fields.avance_semana_4,
                             billingMonth = item.custom_fields.mes_facturacin,
-                            //totalBillingHours = item.custom_fields.horas_tampm_semana_1 + item.custom_fields.horas_tampm_semana_2 + item.custom_fields.horas_tampm_semana_3 + item.custom_fields.horas_tampm_semana_4,
-                            // totalProgress = item.custom_fields.porcentaje_de_avance + item.custom_fields.avance_semana_2 + item.custom_fields.avance_semana_3 + item.custom_fields.avance_semana_4,
+                            totalBillingHours = item.custom_fields.horas_tampm_semana_1,
+                            totalProgress = item.custom_fields.porcentaje_de_avance,
                             estimatedStartDate = item.custom_fields.cf_fecha_de_estimada_inicio,
                             estimatedEndDate = item.custom_fields.cf_fecha_de_estimada_entrega,
                             realStartDate = item.custom_fields.cf_fecha_de_real_inicio,
                             realEndDate = item.custom_fields.cf_fecha_de_real_entrega,
-                            estimatedHourAgent = item.custom_fields.cf_horas_estimadas_por_agente
+                            estimatedHourAgent= Convert.ToString(item.custom_fields.cf_horas_estimadas_por_agente)
                         };
 
                         Console.WriteLine(tickets.TicketID + " " +
@@ -74,6 +75,8 @@ namespace TicketToolServices.Controllers
                                           tickets.status + " " +
                                           tickets.tmHoursWeek1 + " "
                                          );
+
+                        await TicketRepository.Post(tickets, context);
                     }
                 }
             }
@@ -92,6 +95,7 @@ namespace TicketToolServices.Controllers
 
                         Console.WriteLine(tickets.description);
 
+                        await TicketRepository.Post(tickets, context);
                     }
                 }
             }
@@ -112,7 +116,7 @@ namespace TicketToolServices.Controllers
 
                         Console.WriteLine(tickets.resolvedDate);
 
-                         // await TicketRepository.Post(tickets, context);
+                        await TicketRepository.Post(tickets, context);
 
                     }
                 }
@@ -120,6 +124,9 @@ namespace TicketToolServices.Controllers
             }
 
             return await TicketRepository.SelectAsync(context);
+           // await TicketRepository.Post(tickets, context);
         }
+
+      
     }
 }

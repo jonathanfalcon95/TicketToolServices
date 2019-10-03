@@ -16,7 +16,7 @@ namespace TicketToolServices.Models
         public string companyID { get; set; }
         public string customerID { get; set; }
         public long agentID { get; set; }
-        public string groupID { get; set; }
+        public long groupID { get; set; }
         public string creationDate { get; set; }
         public string expirationDate { get; set; }
         public string lastUpdateDate { get; set; }
