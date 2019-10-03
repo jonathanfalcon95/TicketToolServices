@@ -17,7 +17,6 @@ namespace TicketToolServices.Repository
             var Model = new
             {
                  ticketID = (int)reader["ticketID"],
-                 customerID = reader["subject"].ToString(),
                  subject = reader["subject"].ToString(),
                  description = reader["description"].ToString(),
                  status = reader["status"].ToString(),
@@ -25,8 +24,9 @@ namespace TicketToolServices.Repository
                  source = reader["source"].ToString(),
                  type = reader["type"].ToString(),
                  companyID = reader["companyID"].ToString(),
-                 email = reader["email"].ToString(),
-                 phoneNumberRequester = reader["phoneNumberRequester"].ToString(),
+                // email = reader["email"].ToString(),
+                customerID = reader["customerID"].ToString(),
+                phoneNumberRequester = reader["phoneNumberRequester"].ToString(),
                  IDFacebookProfile = reader["IDFacebookProfile"].ToString(),
                  agentID = reader["agentID"].ToString(),
                  groupID = reader["groupID"].ToString(),
@@ -67,7 +67,7 @@ namespace TicketToolServices.Repository
             return Model;
         }
 
-        public static async Task Post(Tickets ticketsreq, Tickets ticketsdes,  ExecutionContext context)
+        public static async Task Post(Tickets tickets,  ExecutionContext context)
         {
 
             var str = Conexion.GetConnectionString(context);
@@ -79,17 +79,15 @@ namespace TicketToolServices.Repository
 
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
-                    cmd.Parameters.Add(new SqlParameter("@ticketID", ticketsreq.TicketID));
-                    cmd.Parameters.Add(new SqlParameter("@customerID", ticketsreq.customerID));
-                    cmd.Parameters.Add(new SqlParameter("@description", ((ticketsdes.description != null) )));
-                    cmd.Parameters.Add(new SqlParameter("@subject", ticketsreq.subject));
-                    cmd.Parameters.Add(new SqlParameter("@status", ticketsreq.status));
-                    cmd.Parameters.Add(new SqlParameter("@priority", ticketsreq.priority));
-                    cmd.Parameters.Add(new SqlParameter("@source", ticketsreq.source));
-                    cmd.Parameters.Add(new SqlParameter("@type", ticketsreq.type));
-                    cmd.Parameters.Add(new SqlParameter("@companyID", ticketsreq.companyID));
-                    cmd.Parameters.Add(new SqlParameter("@email", ticketsreq.email));
-                    cmd.Parameters.Add(new SqlParameter("@phoneNumberRequester", ticketsreq.phoneNumberRequester));
+                    cmd.Parameters.Add(new SqlParameter("@ticketID", tickets.TicketID));
+                    cmd.Parameters.Add(new SqlParameter("@customerID", tickets.customerID));
+                    cmd.Parameters.Add(new SqlParameter("@description", ((tickets.description != null) )));
+                    cmd.Parameters.Add(new SqlParameter("@subject", tickets.subject));
+                    cmd.Parameters.Add(new SqlParameter("@status", tickets.status));
+                    cmd.Parameters.Add(new SqlParameter("@priority", tickets.priority));
+                    cmd.Parameters.Add(new SqlParameter("@source", tickets.source));
+                    cmd.Parameters.Add(new SqlParameter("@type", tickets.type));
+                    cmd.Parameters.Add(new SqlParameter("@companyID", tickets.companyID));
 
 
                     await sql.OpenAsync();
