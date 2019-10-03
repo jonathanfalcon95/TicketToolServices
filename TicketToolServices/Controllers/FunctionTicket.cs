@@ -22,7 +22,6 @@ namespace TicketToolServices.Controllers
         [FunctionName("Function1")]
         public static async Task<ActionResult<object>> TicketsFunction([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "tickets")] HttpRequest req, ILogger log, ExecutionContext context)
 
-
         {
             var response = Conexion.GetDataApi("/tickets?include=description");
             if (response.IsSuccessStatusCode)

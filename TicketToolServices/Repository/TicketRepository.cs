@@ -67,8 +67,6 @@ namespace TicketToolServices.Repository
             return Model;
         }
 
-
-
         public static async Task Post(Tickets tickets, ExecutionContext context)
         {
 
@@ -163,10 +161,7 @@ namespace TicketToolServices.Repository
                 return response;
             }
 
-
-
         }
-
 
     }
 }
