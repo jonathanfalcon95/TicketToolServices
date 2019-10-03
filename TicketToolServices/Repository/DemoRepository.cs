@@ -1,16 +1,19 @@
-﻿using Microsoft.Azure.WebJobs;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Azure.WebJobs;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Linq;
 using System.Text;
 
 using System.Threading.Tasks;
+using TicketToolServices.Models;
 
 namespace TicketToolServices.Repository
 {
     class DemoRepository
     {
-
+        public static readonly List<SFAgentGroupDetail> Items = new List<SFAgentGroupDetail>();
         private static object MapToActivities(SqlDataReader reader)
         {
             var Model = new
@@ -34,7 +37,7 @@ namespace TicketToolServices.Repository
         }
 
         // mapeo del grupo detalle
-        /*
+        
         private static object MapToGroupsDetail(SqlDataReader reader3)
         {
             var Model = new
@@ -48,7 +51,7 @@ namespace TicketToolServices.Repository
 
             };
             return Model;
-        }*/
+        }
 
 
         public static async Task<List<object>> SelectAsync(ExecutionContext context)
@@ -66,10 +69,6 @@ namespace TicketToolServices.Repository
 
                 using (SqlCommand cmd = new SqlCommand(text, conn))
                 {
-                    // Execute the command and log the # rows affected.
-                    //  var rows = await cmd.ExecuteNonQueryAsync();
-                    //   log.LogInformation("rows were updated");
-
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -77,8 +76,7 @@ namespace TicketToolServices.Repository
                             response.Add(MapToActivities(reader));
                         }
                     }
-                    //log.LogInformation();
-
+                    
                 }
                 return response;
             }
@@ -87,7 +85,7 @@ namespace TicketToolServices.Repository
          
         }
 
-        // public 
+        // obtener los datos de los Grupos
         public static async Task<List<object>> GetAllGroups(ExecutionContext context)
         {
 
@@ -103,10 +101,6 @@ namespace TicketToolServices.Repository
 
                 using (SqlCommand cmd = new SqlCommand(text, conn))
                 {
-                    // Execute the command and log the # rows affected.
-                    //  var rows = await cmd.ExecuteNonQueryAsync();
-                    //   log.LogInformation("rows were updated");
-
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -114,27 +108,32 @@ namespace TicketToolServices.Repository
                             response.Add(MapToGroups(reader));
                         }
                     }
-                    //log.LogInformation();
-
+                   
                 }
                 return response;
             }
 
-
-
         }
 
+        
+
+        // obtener todos los datos de SFAgentGroupDetail
         /*
-        public static async Task<List<object>> GetGroupId(ExecutionContext context)
+        public static async Task<List<object>> GetAllGroupDetail(ExecutionContext context)
         {
-            
+            //List<SFAgentGroupDetail> items = new List<SFAgentGroupDetail>();
+            // string groupID = null;
+            SFAgentGroupDetail groupdetail;
             var response = new List<object>();
             var str = Conexion.GetConnectionString(context);
 
             using (SqlConnection conn = new SqlConnection(str))
             {
                 await conn.OpenAsync();
-                var text = string.Format("Select * from SFAgentGroupDetail where agentID = id");
+                //var text = Items.FirstOrDefault(t => t.groupID == groupID);
+                var text = "Select * from SFAgentGroupDetail where groupID = groupdetail.groupID";
+
+                //var text2 = Items.FirstOrDefault("Select * from SFAgentGroupDetail where groupID = groupID"); 
 
                 using (SqlCommand cmd = new SqlCommand(text, conn))
                 {
@@ -146,7 +145,7 @@ namespace TicketToolServices.Repository
                     {
                         while (await reader.ReadAsync())
                         {
-                            response.Add(MapToGroups(reader));
+                            response.Add(MapToGroupsDetail(reader));
                         }
                     }
                     //log.LogInformation();
@@ -155,7 +154,34 @@ namespace TicketToolServices.Repository
                 return response;
             }
 
-        }
-        */
+        }*/
+
+
+        // obtener todos los datos de SFAgentGroupDetail por ID
+        /*
+        public static async Task GetGroupDetailId(SFAgentGroupDetail groupdetail, ExecutionContext context)
+        {
+
+            var str = Conexion.GetConnectionString(context);
+
+            using (SqlConnection sql = new SqlConnection(str))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_GetGroupDetailById", sql))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("@groupID", groupdetail.groupID));
+                    cmd.Parameters.Add(new SqlParameter("@groupName", groupdetail.groupName));
+                    cmd.Parameters.Add(new SqlParameter("@agentID", groupdetail.agentID));
+                    cmd.Parameters.Add(new SqlParameter("@agentName", groupdetail.agentName));
+                    cmd.Parameters.Add(new SqlParameter("@date", groupdetail.date));
+                    cmd.Parameters.Add(new SqlParameter("@hours", groupdetail.hours));
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
+                    return;
+                }
+            }
+        }*/
+        
+
     }
 }
