@@ -24,10 +24,10 @@ namespace TicketToolServices.Repository
                 source = reader["source"].ToString(),
                 type = reader["type"].ToString(),
                 companyID = reader["companyID"].ToString(),
-                // email = reader["email"].ToString(),
+                email = reader["email"].ToString(),
                 customerID = reader["customerID"].ToString(),
-                // phoneNumberRequester = reader["phoneNumberRequester"].ToString(),
-                // IDFacebookProfile = reader["IDFacebookProfile"].ToString(),
+                phoneNumberRequester = reader["phoneNumberRequester"].ToString(),
+                IDFacebookProfile = reader["IDFacebookProfile"].ToString(),
                 agentID = (long)reader["agentID"],
                 groupID = (long)reader["groupID"],
                 creationDate = reader["creationDate"].ToString(),
@@ -37,10 +37,10 @@ namespace TicketToolServices.Repository
                 closedDate = reader["closedDate"].ToString(),
                 fistResponseRequestDate = reader["fistResponseRequestDate"].ToString(),
                 customerCompany = reader["customerCompany"].ToString(),
-                // agentInteractions = (int)reader["agentInteractions"],
-                //  customerIntearction = (int)reader["customerIntearction"],
-                //  resolutionStatus = reader["customerCompany"].ToString(),
-                //  firstResponseStatus = reader["firstResponseStatus"].ToString(),
+                agentInteractions = (int)reader["agentInteractions"],
+                customerIntearction = (int)reader["customerIntearction"],
+                resolutionStatus = reader["customerCompany"].ToString(),
+                firstResponseStatus = reader["firstResponseStatus"].ToString(),
                 projectNumber = reader["projectNumber"].ToString(),
                 quotationID = reader["quotationID"].ToString(),
                 sharePointID = reader["harePointID"].ToString(),
@@ -74,29 +74,38 @@ namespace TicketToolServices.Repository
 
             using (SqlConnection sql = new SqlConnection(str))
             {
-                using (SqlCommand cmd = new SqlCommand("sp_Insert_Tickets", sql))
+                using (SqlCommand cmd = new SqlCommand("sp_Insert_Ticket", sql))
                 {
 
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
                     cmd.Parameters.Add(new SqlParameter("@ticketID", tickets.TicketID));
+                    cmd.Parameters.Add(new SqlParameter("@customerID", tickets.customerID));
                     cmd.Parameters.Add(new SqlParameter("@subject", tickets.subject));
                     cmd.Parameters.Add(new SqlParameter("@description", tickets.description));
                     cmd.Parameters.Add(new SqlParameter("@status", tickets.status));
                     cmd.Parameters.Add(new SqlParameter("@priority", tickets.priority));
                     cmd.Parameters.Add(new SqlParameter("@source", tickets.source));
                     cmd.Parameters.Add(new SqlParameter("@type", tickets.type));
-                    cmd.Parameters.Add(new SqlParameter("@companyID", tickets.companyID));
-                    cmd.Parameters.Add(new SqlParameter("@customerID", tickets.customerID));
+                    cmd.Parameters.Add(new SqlParameter("@email", "prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@phoneNumberRequester", "prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@IDFacebookProfile", "prueba"));
                     cmd.Parameters.Add(new SqlParameter("@agentID", tickets.agentID));
                     cmd.Parameters.Add(new SqlParameter("@groupID", tickets.groupID));
-                    cmd.Parameters.Add(new SqlParameter("@creationDate", tickets.creationDate));
-                    cmd.Parameters.Add(new SqlParameter("@expirationDate", tickets.expirationDate));
-                    cmd.Parameters.Add(new SqlParameter("@lastUpdateDate", tickets.lastUpdateDate));
-                    cmd.Parameters.Add(new SqlParameter("@resolvedDate", tickets.lastUpdateDate));
-                    cmd.Parameters.Add(new SqlParameter("@closedDate", tickets.closedDate));
-                    cmd.Parameters.Add(new SqlParameter("@fistResponseRequestDate", tickets.fistResponseRequestDate));
-                    cmd.Parameters.Add(new SqlParameter("@customerCompany", tickets.customerCompany));
+                    cmd.Parameters.Add(new SqlParameter("@creationDate", "prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@expirationDate", "prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@resolvedDate", "prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@closedDate", "prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@lastUpdateDate", "prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@fistResponseRequestDate","prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@agentInteractions", "prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@customerIntearction", "prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@resolutionStatus", "prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@firstResponseStatus", "prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@tags", "prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@surveysResult", "prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@companyID", "prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@customerCompany", "prueba"));
                     cmd.Parameters.Add(new SqlParameter("@projectNumber", tickets.projectNumber));
                     cmd.Parameters.Add(new SqlParameter("@quotationID", tickets.quotationID));
                     cmd.Parameters.Add(new SqlParameter("@sharePointID", tickets.sharePointID));

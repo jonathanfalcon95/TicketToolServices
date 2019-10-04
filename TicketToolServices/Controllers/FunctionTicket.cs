@@ -85,7 +85,7 @@ namespace TicketToolServices.Controllers
                         {
                             var ticketID3 = response3.Content.ReadAsAsync<IEnumerable<dynamic>>().Result;
                             {
-                                foreach (var item3 in ticketID)
+                                foreach (var item3 in ticketID3)
                                 {
                                     var tickets3 = new Tickets()
                                     {
@@ -93,6 +93,8 @@ namespace TicketToolServices.Controllers
                                         closedDate = item3.stats.closed_at,
                                         fistResponseRequestDate = item3.stats.first_responded_at
                                     };
+                                        
+
                                     await TicketRepository.Post(tickets, tickets3,context);
 
                                 }

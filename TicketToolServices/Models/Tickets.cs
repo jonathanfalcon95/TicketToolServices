@@ -14,7 +14,16 @@ namespace TicketToolServices.Models
         public string source { get; set; }
         public string type { get; set; }
         public string companyID { get; set; }
+        public string email { get; set; }
         public string customerID { get; set; }
+        public string phoneNumberRequester { get; set; }
+        public string IDFacebookProfile { get; set; }
+        public string agentInteractions { get; set; }
+        public string customerIntearction { get; set; }
+        public string resolutionStatus { get; set; }
+        public string firstResponseStatus { get; set; }
+        public string tags { get; set; }
+        public string surveysResult { get; set; }
         public long agentID { get; set; }
         public long groupID { get; set; }
         public string creationDate { get; set; }
