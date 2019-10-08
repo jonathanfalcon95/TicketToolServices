@@ -74,8 +74,12 @@ namespace TicketToolServices.Repository
 
             using (SqlConnection sql = new SqlConnection(str))
             {
-                using (SqlCommand cmd = new SqlCommand("sp_Insert_Ticket", sql))
+                using (SqlCommand cmd = new SqlCommand("dbo.sp_Insert_Ticket", sql))
                 {
+                    /*if (tickets.TicketID==2957)
+                    {
+                        string a = "";
+                    }*/
 
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
 
@@ -83,49 +87,48 @@ namespace TicketToolServices.Repository
                     cmd.Parameters.Add(new SqlParameter("@customerID", tickets.customerID));
                     cmd.Parameters.Add(new SqlParameter("@subject", tickets.subject));
                     cmd.Parameters.Add(new SqlParameter("@description", tickets.description));
-                    cmd.Parameters.Add(new SqlParameter("@status", tickets.status));
+                    cmd.Parameters.Add(new SqlParameter("@status", (tickets.status != null)));
                     cmd.Parameters.Add(new SqlParameter("@priority", tickets.priority));
                     cmd.Parameters.Add(new SqlParameter("@source", tickets.source));
                     cmd.Parameters.Add(new SqlParameter("@type", tickets.type));
-                    cmd.Parameters.Add(new SqlParameter("@email", "prueba"));
-                    cmd.Parameters.Add(new SqlParameter("@phoneNumberRequester", "prueba"));
-                    cmd.Parameters.Add(new SqlParameter("@IDFacebookProfile", "prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@email", (tickets.email != null)));
+                    cmd.Parameters.Add(new SqlParameter("@phoneNumberRequester", (tickets.phoneNumberRequester != null)));
+                    cmd.Parameters.Add(new SqlParameter("@IDFacebookProfile", (tickets.IDFacebookProfile != null)));
                     cmd.Parameters.Add(new SqlParameter("@agentID", tickets.agentID));
-                    cmd.Parameters.Add(new SqlParameter("@groupID", tickets.groupID));
-                    cmd.Parameters.Add(new SqlParameter("@creationDate", "prueba"));
-                    cmd.Parameters.Add(new SqlParameter("@expirationDate", "prueba"));
-                    cmd.Parameters.Add(new SqlParameter("@resolvedDate", "prueba"));
-                    cmd.Parameters.Add(new SqlParameter("@closedDate", "prueba"));
-                    cmd.Parameters.Add(new SqlParameter("@lastUpdateDate", "prueba"));
-                    cmd.Parameters.Add(new SqlParameter("@fistResponseRequestDate","prueba"));
-                    cmd.Parameters.Add(new SqlParameter("@agentInteractions", "prueba"));
-                    cmd.Parameters.Add(new SqlParameter("@customerIntearction", "prueba"));
-                    cmd.Parameters.Add(new SqlParameter("@resolutionStatus", "prueba"));
-                    cmd.Parameters.Add(new SqlParameter("@firstResponseStatus", "prueba"));
-                    cmd.Parameters.Add(new SqlParameter("@tags", "prueba"));
-                    cmd.Parameters.Add(new SqlParameter("@surveysResult", "prueba"));
-                    cmd.Parameters.Add(new SqlParameter("@companyID", "prueba"));
-                    cmd.Parameters.Add(new SqlParameter("@customerCompany", "prueba"));
+                    cmd.Parameters.Add(new SqlParameter("@groupID", (tickets.groupID != null)));
+                    cmd.Parameters.Add(new SqlParameter("@creationDate", (tickets.creationDate != null)));
+                    cmd.Parameters.Add(new SqlParameter("@expirationDate", tickets.expirationDate));
+                    cmd.Parameters.Add(new SqlParameter("@resolvedDate", (tickets3.resolvedDate != null)));
+                    cmd.Parameters.Add(new SqlParameter("@closedDate", (tickets3.closedDate != null)));
+                    cmd.Parameters.Add(new SqlParameter("@lastUpdateDate", (tickets.lastUpdateDate != null)));
+                    cmd.Parameters.Add(new SqlParameter("@fistResponseRequestDate", tickets3.fistResponseRequestDate));
+                    cmd.Parameters.Add(new SqlParameter("@agentInteractions", (tickets.agentInteractions != null)));
+                    cmd.Parameters.Add(new SqlParameter("@customerIntearction", (tickets.customerIntearction != null)));
+                    cmd.Parameters.Add(new SqlParameter("@resolutionStatus", (tickets.resolutionStatus != null)));
+                    cmd.Parameters.Add(new SqlParameter("@firstResponseStatus", (tickets.firstResponseStatus != null)));
+                    cmd.Parameters.Add(new SqlParameter("@tags", (tickets.tags != null)));
+                    cmd.Parameters.Add(new SqlParameter("@surveysResult", (tickets.surveysResult != null)));
+                    cmd.Parameters.Add(new SqlParameter("@companyID", tickets.companyID));
+                    cmd.Parameters.Add(new SqlParameter("@customerCompany", tickets.customerCompany));
                     cmd.Parameters.Add(new SqlParameter("@projectNumber", tickets.projectNumber));
-                    cmd.Parameters.Add(new SqlParameter("@quotationID", tickets.quotationID));
-                    cmd.Parameters.Add(new SqlParameter("@sharePointID", tickets.sharePointID));
+                    cmd.Parameters.Add(new SqlParameter("@sharePointID", (tickets.sharePointID != null)));
+                    cmd.Parameters.Add(new SqlParameter("@quotationID", (tickets.quotationID != null)));
                     cmd.Parameters.Add(new SqlParameter("@customerEstimatedHours", tickets.customerEstimatedHours));
-                    cmd.Parameters.Add(new SqlParameter("@tmHoursWeek1", tickets.tmHoursWeek1));
-                    cmd.Parameters.Add(new SqlParameter("@tmHoursWeek2", tickets.tmHoursWeek2));
-                    cmd.Parameters.Add(new SqlParameter("@tmHoursWeek3", tickets.tmHoursWeek3));
-                    cmd.Parameters.Add(new SqlParameter("@tmHoursWeek4", tickets.tmHoursWeek4));
-                    cmd.Parameters.Add(new SqlParameter("@progressWeek1", tickets.progressWeek1));
-                    cmd.Parameters.Add(new SqlParameter("@progressWeek2", tickets.progressWeek2));
-                    cmd.Parameters.Add(new SqlParameter("@progressWeek3", tickets.progressWeek3));
-                    cmd.Parameters.Add(new SqlParameter("@progressWeek4", tickets.progressWeek4));
+                    cmd.Parameters.Add(new SqlParameter("@tmHoursWeek1", (tickets.tmHoursWeek1 != null)));
+                    cmd.Parameters.Add(new SqlParameter("@tmHoursWeek2", (tickets.tmHoursWeek2 != null)));
+                    cmd.Parameters.Add(new SqlParameter("@tmHoursWeek3", (tickets.tmHoursWeek3 != null)));
+                    cmd.Parameters.Add(new SqlParameter("@tmHoursWeek4", (tickets.tmHoursWeek4 != null)));
+                    cmd.Parameters.Add(new SqlParameter("@progressWeek1", (tickets.progressWeek1 != null)));
+                    cmd.Parameters.Add(new SqlParameter("@progressWeek2", (tickets.progressWeek2 != null)));
+                    cmd.Parameters.Add(new SqlParameter("@progressWeek3", (tickets.progressWeek3 != null)));
+                    cmd.Parameters.Add(new SqlParameter("@progressWeek4", (tickets.progressWeek4 != null)));
                     cmd.Parameters.Add(new SqlParameter("@billingMonth", tickets.billingMonth));
                     cmd.Parameters.Add(new SqlParameter("@totalBillingHours", tickets.totalBillingHours));
                     cmd.Parameters.Add(new SqlParameter("@totalProgress", tickets.totalProgress));
-                    cmd.Parameters.Add(new SqlParameter("@estimatedStartDate", tickets.estimatedStartDate));
-                    cmd.Parameters.Add(new SqlParameter("@estimatedEndDate", tickets.estimatedEndDate));
-                    cmd.Parameters.Add(new SqlParameter("@realStartDate", tickets.realStartDate));
-                    cmd.Parameters.Add(new SqlParameter("@realStartDate", tickets.realStartDate));
-                    cmd.Parameters.Add(new SqlParameter("@realEndDate", tickets.realEndDate));
+                    cmd.Parameters.Add(new SqlParameter("@estimatedStartDate", tickets.estimatedStartDate != null));
+                    cmd.Parameters.Add(new SqlParameter("@estimatedEndDate", tickets.estimatedEndDate != null));
+                    cmd.Parameters.Add(new SqlParameter("@realStartDate", tickets.realStartDate != null));
+                    cmd.Parameters.Add(new SqlParameter("@realEndDate", tickets.realEndDate != null));
                     cmd.Parameters.Add(new SqlParameter("@estimatedHourAgent", tickets.estimatedHourAgent));
 
                     await sql.OpenAsync();
