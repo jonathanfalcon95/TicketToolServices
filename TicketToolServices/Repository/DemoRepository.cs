@@ -13,7 +13,8 @@ namespace TicketToolServices.Repository
 {
     class DemoRepository
     {
-        public static readonly List<SFAgentGroupDetail> Items = new List<SFAgentGroupDetail>();
+        //static SFAgentGroupDetail SFA = new SFAgentGroupDetail();
+       // public static readonly List<SFAgentGroupDetail> Items = new List<SFAgentGroupDetail>();
         private static object MapToActivities(SqlDataReader reader)
         {
             var Model = new
@@ -56,7 +57,6 @@ namespace TicketToolServices.Repository
 
         public static async Task<List<object>> SelectAsync(ExecutionContext context)
         {
-
             // log.LogInformation(str.ToString());
             var response = new List<object>();
             var str = Conexion.GetConnectionString(context);
@@ -76,13 +76,11 @@ namespace TicketToolServices.Repository
                             response.Add(MapToActivities(reader));
                         }
                     }
-                    
+
                 }
                 return response;
             }
 
-
-         
         }
 
         // obtener los datos de los Grupos
@@ -114,8 +112,6 @@ namespace TicketToolServices.Repository
             }
 
         }
-
-        
 
         // obtener todos los datos de SFAgentGroupDetail
         /*
@@ -180,8 +176,38 @@ namespace TicketToolServices.Repository
                     return;
                 }
             }
-        }*/
-        
+        }
+        */
+
+
+        // otro intento grupo por id
+        public static async Task<List<object>> GetAllGroups2intento(ExecutionContext context)
+        {
+
+            // log.LogInformation(str.ToString());
+            var response = new List<object>();
+            var str = Conexion.GetConnectionString(context);
+
+            using (SqlConnection conn = new SqlConnection(str))
+            {
+                await conn.OpenAsync();
+                var text = "Select * from SFAgentGroupDetail";
+                using (SqlCommand cmd = new SqlCommand(text, conn))
+                {
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            response.Add(MapToGroupsDetail(reader));
+                        }
+                    }
+
+                }
+                return response;
+            }
+
+        }
+
 
     }
 }

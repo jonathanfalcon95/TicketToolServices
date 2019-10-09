@@ -17,17 +17,6 @@ namespace TicketToolServices.Models
         public List<SFAgentGroup> SFAgentGroup { get; }
         public List<SFAgentGroupDetail> SFAgentGroupDetail { get; }
 
-        /*
-        public class TaskCreateModelAgent
-        {
-            internal string agentDescription;
-
-            public string agentID { get; set; }
-        }
-
-        public class TaskUpdateModelAgent
-        {
-            public string agentDescription { get; set; }
-        }*/
+        
     }
 }
