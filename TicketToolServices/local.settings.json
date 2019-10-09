@@ -10,6 +10,7 @@
     "CORSCredentials": false  
   },
   "ConnectionStrings": {
-    "SQLConnectionString": "Server=tcp:sfnetlab.database.windows.net,1433;Initial Catalog=ticketingtool;Persist Security Info=False;User ID=testuser;Password=Factory2020;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
+    "SQLConnectionString": "Server=localhost\\SQLEXPRESS01;Database=ticketingtool;Trusted_Connection=True;"
+    //"SQLConnectionString": "Server=tcp:sfnetlab.database.windows.net,1433;Initial Catalog=ticketingtool;Persist Security Info=False;User ID=testuser;Password=Factory2020;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;"
   }
 }
