@@ -12,18 +12,17 @@ using System.Net.Http.Headers;
 using System.Collections.Generic;
 using TicketToolServices.Models;
 using TicketToolServices.Repository;
+using Newtonsoft.Json.Linq;
 
 namespace TicketToolServices.Controllers
 {
     public static class FunctionTickets
     {
-
         //Inicio Function
         [FunctionName("Function1")]
         public static async Task<ActionResult<object>> TicketsFunction([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "tickets")] HttpRequest req, ILogger log, ExecutionContext context)
-
         {
-            var response = Conexion.GetDataApi("/tickets?include=description");
+            var response = Conexion.GetDataApi("/tickets", "?include=description");
             if (response.IsSuccessStatusCode)
             {
                 var ticketID = response.Content.ReadAsAsync<IEnumerable<dynamic>>().Result;
@@ -35,7 +34,7 @@ namespace TicketToolServices.Controllers
                             TicketID = item.id,
                             subject = item.subject,
                             description = item.description_text,
-                            status = item.status,
+                            status = (item.status is null ? 0 : (int)item.status),
                             priority = item.priority,
                             source = item.source,
                             type = item.type,
@@ -43,8 +42,8 @@ namespace TicketToolServices.Controllers
                             customerID = item.requester_id,
                             agentID = item.responder_id,
                             groupID = item.group_id,
-                            creationDate = item.custom_fields.created_at, 
-                            expirationDate = item.due_by, 
+                            creationDate = item.custom_fields.created_at,
+                            expirationDate = item.due_by,
                             lastUpdateDate = item.custom_fields.updated_at,
                             customerCompany = item.custom_fields.cliente,
                             projectNumber = item.custom_fields.proyecto,
@@ -52,6 +51,7 @@ namespace TicketToolServices.Controllers
                             sharePointID = item.custom_fields.sharepoint_id,
                             customerEstimatedHours = item.custom_fields.horas_estimadas_por_cliente,
                             tmHoursWeek1 = item.custom_fields.horas_tampm_semana_1,
+                            //tmHoursWeek1 = (item.custom_fields.horas_tampm_semana_1 is null ? 0 : (int)item.custom_fields.horas_tampm_semana_1),
                             tmHoursWeek2 = item.custom_fields.horas_tampm_semana_2,
                             tmHoursWeek3 = item.custom_fields.horas_tampm_semana_3,
                             tmHoursWeek4 = item.custom_fields.horas_tampm_semana_4,
@@ -66,47 +66,31 @@ namespace TicketToolServices.Controllers
                             estimatedEndDate = item.custom_fields.cf_fecha_de_estimada_entrega,
                             realStartDate = item.custom_fields.cf_fecha_de_real_inicio,
                             realEndDate = item.custom_fields.cf_fecha_de_real_entrega,
-                            estimatedHourAgent = Convert.ToString(item.custom_fields.cf_horas_estimadas_por_agente)
+                            //estimatedHourAgent = (item.custom_fields.cf_horas_estimadas_por_agente is null ? 0 : (int)item.custom_fields.cf_horas_estimadas_por_agente),
                         };
-                        tickets.totalBillingHours = Convert.ToString(tickets.tmHoursWeek1 + tickets.tmHoursWeek2 + tickets.tmHoursWeek3 + tickets.tmHoursWeek4);
-                        tickets.totalProgress = Convert.ToString(tickets.progressWeek1 + tickets.progressWeek2 + tickets.progressWeek3 + tickets.progressWeek4);
 
+tickets.totalBillingHours = tickets.tmHoursWeek1 + tickets.tmHoursWeek2 + tickets.tmHoursWeek3 + tickets.tmHoursWeek4;
+                        tickets.totalProgress = tickets.progressWeek1 + tickets.progressWeek2 + tickets.progressWeek3 + tickets.progressWeek4;
                         Console.WriteLine(tickets.billingMonth);
                         Console.WriteLine(tickets.TicketID + " " +
                                           tickets.customerID + " " +
                                           tickets.status + " " +
                                           tickets.tmHoursWeek1 + " "
                                          );
-
-
                         //Data that is only in the description url
-                        var response3 = Conexion.GetDataApi("/tickets?include=stats");
+                        var response3 = Conexion.GetDataApi("/tickets/" + tickets.TicketID, "?include=stats");
                         if (response3.IsSuccessStatusCode)
                         {
-                            var ticketID3 = response3.Content.ReadAsAsync<IEnumerable<dynamic>>().Result;
-                            {
-                                foreach (var item3 in ticketID3)
-                                {
-                                    var tickets3 = new Tickets()
-                                    {
-                                        resolvedDate = item3.stats.resolved_at,
-                                        closedDate = item3.stats.closed_at,
-                                        fistResponseRequestDate = item3.stats.first_responded_at
-                                    };
-                                    await TicketRepository.Post(tickets, tickets3,context);
-
-                                }
-                            }
-
+                            var TicketStat = response3.Content.ReadAsAsync<dynamic>().Result;
+                            tickets.resolvedDate = (TicketStat.stats.resolved_at is null ? new DateTime?() : TicketStat.stats.resolved_at);// (DateTime)Tic.stats.resolved_at);
+                            tickets.closedDate = (TicketStat.stats.closed_at is null ? new DateTime?() : TicketStat.stats.closed_at);// (DateTime)Tic.stats.closed_at);
+                            tickets.fistResponseRequestDate = (TicketStat.stats.first_responded_at is null ? new DateTime?() : TicketStat.stats.first_responded_at);// (DateTime)Tic.stats.first_responded_at) ;
+                            await TicketRepository.Post(tickets, context);
                         }
                     }
                 }
             }
-            
-
             return await TicketRepository.SelectAsync(context);
         }
-
-      
     }
 }

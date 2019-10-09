@@ -7,32 +7,31 @@ namespace TicketToolServices.Models
     class Tickets
     {
         public int TicketID { get; set; }
-        public string customerID { get; set; }
         public string subject { get; set; }
         public string description { get; set; }//descript
-        public string status { get; set; }
+        public int status { get; set; }
         public string priority { get; set; }
         public string source { get; set; }
-        public string type { get; set; } 
+        public string type { get; set; }
+        public string companyID { get; set; }
         public string email { get; set; }
+        public string customerID { get; set; }
         public string phoneNumberRequester { get; set; }
         public string IDFacebookProfile { get; set; }
-        public string agentID { get; set; }
-        public string groupID { get; set; }
-        public string creationDate { get; set; }
-        public string expirationDate { get; set; }
-        public string lastUpdateDate { get; set; }
-        public string resolvedDate { get; set; } //stats
-        public string closedDate { get; set; }
-        public string fistResponseRequestDate { get; set; }
         public string agentInteractions { get; set; }
-        public string customerIntearction { get; set; }
+        public string customerInteraction { get; set; }
         public string resolutionStatus { get; set; }
         public string firstResponseStatus { get; set; }
         public string tags { get; set; }
         public string surveysResult { get; set; }
-        public string companyID { get; set; }
-
+        public string agentID { get; set; }
+        public string groupID { get; set; }
+        public DateTime? creationDate { get; set; }
+        public DateTime? expirationDate { get; set; }
+        public DateTime? lastUpdateDate { get; set; }
+        public DateTime? resolvedDate { get; set; } //stats
+        public DateTime? closedDate { get; set; }
+        public DateTime? fistResponseRequestDate { get; set; }
         public string customerCompany { get; set; }
         public string projectNumber { get; set; }
         public string quotationID { get; set; }
@@ -49,13 +48,10 @@ namespace TicketToolServices.Models
         public string billingMonth { get; set; }
         public string totalBillingHours { get; set; }
         public string totalProgress { get; set; }
-        public string estimatedStartDate { get; set; }
-        public string estimatedEndDate { get; set; }
-        public string realStartDate { get; set; }
-        public string realEndDate { get; set; }
-        public string estimatedHourAgent { get; set; }
+        public DateTime? estimatedStartDate { get; set; }
+        public DateTime? estimatedEndDate { get; set; }
+        public DateTime? realStartDate { get; set; }
+        public DateTime? realEndDate { get; set; }
+        public int estimatedHourAgent { get; set; }
     }
-
-
 }
-
