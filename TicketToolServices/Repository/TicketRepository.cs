@@ -11,58 +11,6 @@ namespace TicketToolServices.Repository
 {
     class TicketRepository
     {
-        public static object MapToActivities(SqlDataReader reader)
-        {
-            var Model = new
-            {
-                ticketID = (int)reader["ticketID"],
-                subject = reader["subject"].ToString(),
-                description = reader["description"].ToString(),
-                status = (int)reader["status"],
-                priority = reader["priority"].ToString(),
-                source = reader["source"].ToString(),
-                type = reader["type"].ToString(),
-                companyID = reader["companyID"].ToString(),
-                email = reader["email"].ToString(),
-                customerID = reader["customerID"].ToString(),
-                phoneNumberRequester = reader["phoneNumberRequester"].ToString(),
-                IDFacebookProfile = reader["IDFacebookProfile"].ToString(),
-                agentID = (long)reader["agentID"],
-                groupID = (long)reader["groupID"],
-                creationDate = reader["creationDate"].ToString(),
-                expirationDate = reader["expirationDate"].ToString(),
-                lastUpdateDate = reader["lastUpdateDate"].ToString(),
-                resolvedDate = reader["resolvedDate"].ToString(),
-                closedDate = reader["closedDate"].ToString(),
-                fistResponseRequestDate = reader["fistResponseRequestDate"].ToString(),
-                customerCompany = reader["customerCompany"].ToString(),
-                agentInteractions = (int)reader["agentInteractions"],
-                customerIntearction = (int)reader["customerIntearction"],
-                resolutionStatus = reader["customerCompany"].ToString(),
-                firstResponseStatus = reader["firstResponseStatus"].ToString(),
-                projectNumber = reader["projectNumber"].ToString(),
-                quotationID = reader["quotationID"].ToString(),
-                sharePointID = reader["harePointID"].ToString(),
-                customerEstimatedHours = (float)reader["customerEstimatedHours"],
-                tmHoursWeek1 = (float)reader["tmHoursWeek1"],
-                tmHoursWeek2 = (float)reader["tmHoursWeek2"],
-                tmHoursWeek3 = (float)reader["tmHoursWeek3"],
-                tmHoursWeek4 = (float)reader["tmHoursWeek4"],
-                progressWeek1 = (float)reader["progressWeek1"],
-                progressWeek2 = (float)reader["progressWeek2"],
-                progressWeek3 = (float)reader["progressWeek3"],
-                progressWeek4 = (float)reader["progressWeek4"],
-                billingMonth = reader["billingMonth"].ToString(),
-                totalBillingHours = reader["totalBillingHours"].ToString(),
-                totalProgress = reader["totalProgress"].ToString(),
-                estimatedStartDate = reader["estimatedStartDate"].ToString(),
-                estimatedEndDate = reader["estimatedEndDate"].ToString(),
-                realStartDate = reader["realStartDate"].ToString(),
-                realEndDate = reader["realEndDate"].ToString(),
-                estimatedHourAgent = (float)reader["estimatedHourAgent"],
-            };
-            return Model;
-        }
         public static async Task Post(Tickets tickets, ExecutionContext context)
         {
             DateTime parsedDate = DateTime.Parse(tickets.billingMonth);
@@ -128,15 +76,26 @@ namespace TicketToolServices.Repository
                 }
             }
         }
+
+       /* public static object MapToActivities(SqlDataReader reader)
+        {
+            var Model = new
+            {
+
+                lastExecutedDate = reader["lastExecutedDate"].ToString(),
+
+            };
+            return Model;
+        }
         public static async Task<List<object>> SelectAsync(ExecutionContext context)
         {
             // log.LogInformation(str.ToString());
-            var response = new List<object>();
+            var response2 = new List<object>();
             var str = Conexion.GetConnectionString(context);
             using (SqlConnection conn = new SqlConnection(str))
             {
                 await conn.OpenAsync();
-                var text = "Select * From Ticket";
+                var text = "SELECT lastExecutedDate FROM dbo.SFControlData";
                 using (SqlCommand cmd = new SqlCommand(text, conn))
                 {
                     // Execute the command and log the # rows affected.
@@ -146,16 +105,16 @@ namespace TicketToolServices.Repository
                     {
                         while (await reader.ReadAsync())
                         {
-                            response.Add(MapToActivities(reader));
+                            response2.Add(MapToActivities(reader));
                         }
                     }
                     //log.LogInformation();
 
                 }
-                return response;
+                return response2;
             }
 
-        }
+        }*/
 
     }
 }

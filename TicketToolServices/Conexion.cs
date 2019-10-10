@@ -12,6 +12,7 @@ namespace TicketToolServices
     class Conexion
     {
         private const string url = "https://tmconsulting.freshdesk.com/api/v2";
+
         public static string GetConnectionString(ExecutionContext context)
         {
 
