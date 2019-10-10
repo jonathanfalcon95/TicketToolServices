@@ -15,7 +15,6 @@ namespace TicketToolServices.Repository
         {
             DateTime parsedDate = DateTime.Parse(tickets.billingMonth);
             var str = Conexion.GetConnectionString(context);
-            //int resp = 0;
             using (SqlConnection sql = new SqlConnection(str))
             {
                 using (SqlCommand cmd = new SqlCommand("dbo.sp_Insert_Ticket", sql))
@@ -31,23 +30,13 @@ namespace TicketToolServices.Repository
                     cmd.Parameters.Add(new SqlParameter("@priority", tickets.priority));
                     cmd.Parameters.Add(new SqlParameter("@source", tickets.source));
                     cmd.Parameters.Add(new SqlParameter("@type", tickets.type));
-                    //cmd.Parameters.Add(new SqlParameter("@email", tickets.email));
-                    //cmd.Parameters.Add(new SqlParameter("@phoneNumberRequester", tickets.phoneNumberRequester));
-                    //cmd.Parameters.Add(new SqlParameter("@IDFacebookProfile", tickets.IDFacebookProfile));
                     cmd.Parameters.Add(new SqlParameter("@agentID", tickets.agentID));
                     cmd.Parameters.Add(new SqlParameter("@groupID", tickets.groupID));
                     cmd.Parameters.Add(new SqlParameter("@creationDate", tickets.creationDate));
                     cmd.Parameters.Add(new SqlParameter("@expirationDate", tickets.expirationDate));
                     cmd.Parameters.Add(new SqlParameter("@resolvedDate", tickets.resolvedDate));
                     cmd.Parameters.Add(new SqlParameter("@closedDate", tickets.closedDate));
-                    cmd.Parameters.Add(new SqlParameter("@lastUpdateDate", tickets.lastUpdateDate));
                     cmd.Parameters.Add(new SqlParameter("@fistResponseRequestDate", tickets.fistResponseRequestDate));
-                    //cmd.Parameters.Add(new SqlParameter("@agentInteractions", tickets.agentInteractions));
-                    //cmd.Parameters.Add(new SqlParameter("@customerInteraction", tickets.customerInteraction));
-                    //cmd.Parameters.Add(new SqlParameter("@resolutionStatus", "prueba"));
-                    //cmd.Parameters.Add(new SqlParameter("@firstResponseStatus", "prueba"));
-                    //cmd.Parameters.Add(new SqlParameter("@tags", "prueba"));
-                    //cmd.Parameters.Add(new SqlParameter("@surveysResult", "prueba"));
                     cmd.Parameters.Add(new SqlParameter("@companyID", tickets.companyID));
                     cmd.Parameters.Add(new SqlParameter("@customerCompany", tickets.customerCompany));
                     cmd.Parameters.Add(new SqlParameter("@projectNumber", tickets.projectNumber));
@@ -76,45 +65,5 @@ namespace TicketToolServices.Repository
                 }
             }
         }
-
-       /* public static object MapToActivities(SqlDataReader reader)
-        {
-            var Model = new
-            {
-
-                lastExecutedDate = reader["lastExecutedDate"].ToString(),
-
-            };
-            return Model;
-        }
-        public static async Task<List<object>> SelectAsync(ExecutionContext context)
-        {
-            // log.LogInformation(str.ToString());
-            var response2 = new List<object>();
-            var str = Conexion.GetConnectionString(context);
-            using (SqlConnection conn = new SqlConnection(str))
-            {
-                await conn.OpenAsync();
-                var text = "SELECT lastExecutedDate FROM dbo.SFControlData";
-                using (SqlCommand cmd = new SqlCommand(text, conn))
-                {
-                    // Execute the command and log the # rows affected.
-                    //  var rows = await cmd.ExecuteNonQueryAsync();
-                    //   log.LogInformation("rows were updated");
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            response2.Add(MapToActivities(reader));
-                        }
-                    }
-                    //log.LogInformation();
-
-                }
-                return response2;
-            }
-
-        }*/
-
     }
 }

@@ -23,7 +23,6 @@ namespace TicketToolServices.Repository
         }
         public static async Task<dynamic> SelectAsync(ExecutionContext context)
         {
-            // log.LogInformation(str.ToString());
             var response3 = new List<dynamic>();
             var str = Conexion.GetConnectionString(context);
             using (SqlConnection conn = new SqlConnection(str))
@@ -32,9 +31,6 @@ namespace TicketToolServices.Repository
                 var text = "SELECT lastExecutedDate FROM dbo.SFControlData";
                 using (SqlCommand cmd = new SqlCommand(text, conn))
                 {
-                    // Execute the command and log the # rows affected.
-                    //  var rows = await cmd.ExecuteNonQueryAsync();
-                    //   log.LogInformation("rows were updated");
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
@@ -42,7 +38,6 @@ namespace TicketToolServices.Repository
                             response3.Add(MapToActivities(reader));
                         }
                     }
-                    //log.LogInformation();
 
                 }
                 return response3;
