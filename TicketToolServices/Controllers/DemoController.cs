@@ -26,6 +26,7 @@ using System.Net;
 //using Newtonsoft.Json;
 using System.Text;
 using System.Net.Http.Headers;
+using Lucene.Net.Support;
 
 namespace TicketToolServices.Controllers
 {
@@ -143,8 +144,9 @@ namespace TicketToolServices.Controllers
         }
 
         // grupos
-        [FunctionName("GetGroup")]
-        public static async Task<HttpResponseMessage> GetGroup([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "groups")] HttpRequest req, ILogger log, ExecutionContext context)
+        
+        [FunctionName("GetGroups")]
+        public static async Task<HttpResponseMessage> GetGroups([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "groups")] HttpRequest req, ILogger log, ExecutionContext context)
         {
             using (var httpClient = new HttpClient())
             {
@@ -152,8 +154,6 @@ namespace TicketToolServices.Controllers
                 {
                     var base64authorization = Convert.ToBase64String(Encoding.ASCII.GetBytes("UNGq0cadwojfirXm6U7o:X"));
                     request.Headers.TryAddWithoutValidation("Authorization", $"Basic {base64authorization}");
-
-                    //request.Headers.GetValues("application/json");
 
                     var result = await httpClient.SendAsync(request);
 
@@ -163,6 +163,32 @@ namespace TicketToolServices.Controllers
 
 
         }
+        
+
+        // grupo por Id
+
+        [FunctionName("GetGroupId")]
+        public static async Task<HttpResponseMessage> GetGroupId([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "groups/{id}")] HttpRequest req, ILogger log, ExecutionContext context, string id)
+        {
+            using (var httpClient = new HttpClient())
+            {
+               
+                               
+                using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://tmconsulting.freshdesk.com/api/v2/groups/"+id))
+                {
+                    var base64authorization = Convert.ToBase64String(Encoding.ASCII.GetBytes("UNGq0cadwojfirXm6U7o:X"));
+                    request.Headers.TryAddWithoutValidation("Authorization", $"Basic {base64authorization}");
+
+                    var result = await httpClient.SendAsync(request);
+
+                    return result;
+                }
+            }
+
+
+        }
+
+
 
 
     }

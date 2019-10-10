@@ -13,8 +13,7 @@ namespace TicketToolServices.Repository
 {
     class DemoRepository
     {
-        //static SFAgentGroupDetail SFA = new SFAgentGroupDetail();
-       // public static readonly List<SFAgentGroupDetail> Items = new List<SFAgentGroupDetail>();
+        
         private static object MapToAgent(SqlDataReader reader)
         {
             var Model = new
@@ -54,39 +53,7 @@ namespace TicketToolServices.Repository
             return Model;
         }
 
-        // guia de github de tickets
-        /*
-        public static async Task<List<object>> SelectAsync(ExecutionContext context)
-        {
-            // log.LogInformation(str.ToString());
-            var response = new List<object>();
-            var str = Conexion.GetConnectionString(context);
-            //var str2 = Conexion.GetDataApi("/agents");
-            using (SqlConnection conn = new SqlConnection(str))
-            {
-                await conn.OpenAsync();
-                var text = "Select * From Agent";
-                using (SqlCommand cmd = new SqlCommand(text, conn))
-                {
-                    // Execute the command and log the # rows affected.
-                    //  var rows = await cmd.ExecuteNonQueryAsync();
-                    //   log.LogInformation("rows were updated");
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            response.Add(MapToAgent(reader));
-                        }
-                    }
-                    //log.LogInformation();
-
-                }
-                return response;
-            }
-
-        }
-        */
-
+        
         
 
         // obtener los datos de los Grupos
