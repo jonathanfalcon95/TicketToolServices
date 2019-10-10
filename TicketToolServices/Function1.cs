@@ -19,7 +19,7 @@ namespace TicketToolServices
 {
     public static class Function1
     {
-
+        
         [FunctionName("Function1")]
         public static void Run([TimerTrigger("0 */5 * * * *")]TimerInfo myTimer, ILogger log)
         {

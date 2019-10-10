@@ -6,12 +6,12 @@ using System.Configuration;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
+
 namespace TicketToolServices
 {
     class Conexion
     {
         private const string url = "https://tmconsulting.freshdesk.com/api/v2";
-        
         public static string GetConnectionString(ExecutionContext context)
         {
 
@@ -23,20 +23,25 @@ namespace TicketToolServices
 
             return config.GetConnectionString("SQLConnectionString");
         }
+        //        public static GetObjectApi <T> {
+        //}}
 
         public static T GetDataApiGeneric<T>(string settingName)
         {
+
             object value = ConfigurationManager.AppSettings[settingName];
             return (T)Convert.ChangeType(value, typeof(T));
         }
 
-
         public static HttpResponseMessage GetDataApi(string route, string urlParameters = "")
         {
-            //InstanciaHttpClient de Tickets
+
+
+
+            //InstanciaHttpClient
             HttpClient client = new HttpClient();
 
-            //AsignacionDeURL Tickets
+            //AsignacionDeURL
             client.BaseAddress = new Uri(url + route);
 
             //Credenciales del API de FreshDesk
@@ -63,43 +68,7 @@ namespace TicketToolServices
             return response;
 
         }
-
-        // probando n por si funciona 
-
-       public static HttpResponseMessage GetDataApiFredeskh(string route, string urlParameters = "")
-        {
-            //InstanciaHttpClient de Tickets
-            HttpClient client = new HttpClient();
-
-            //AsignacionDeURL Tickets
-            client.BaseAddress = new Uri(url + route);
-
-            //Credenciales del API de FreshDesk
-            string yourusername = "UNGq0cadwojfirXm6U7o";
-            string yourpwd = "X";
-
-            //Authorization al API
-
-
-            client.DefaultRequestHeaders.Authorization =
-              new AuthenticationHeaderValue(
-                  "Basic", Convert.ToBase64String(
-                      System.Text.ASCIIEncoding.ASCII.GetBytes(
-                         $"{yourusername}:{yourpwd}")));
-
-
-
-            client.DefaultRequestHeaders.Accept.Add(
-            new MediaTypeWithQualityHeaderValue("application/json"));
-
-            // List data response.
-            HttpResponseMessage response = client.GetAsync(urlParameters).Result;
-
-            return response;
-
-        }
-
-
-
     }
+
+
 }

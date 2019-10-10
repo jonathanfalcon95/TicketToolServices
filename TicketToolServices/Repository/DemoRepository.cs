@@ -15,7 +15,7 @@ namespace TicketToolServices.Repository
     {
         //static SFAgentGroupDetail SFA = new SFAgentGroupDetail();
        // public static readonly List<SFAgentGroupDetail> Items = new List<SFAgentGroupDetail>();
-        private static object MapToActivities(SqlDataReader reader)
+        private static object MapToAgent(SqlDataReader reader)
         {
             var Model = new
             {
@@ -54,36 +54,44 @@ namespace TicketToolServices.Repository
             return Model;
         }
 
-
+        // guia de github de tickets
+        /*
         public static async Task<List<object>> SelectAsync(ExecutionContext context)
         {
             // log.LogInformation(str.ToString());
             var response = new List<object>();
             var str = Conexion.GetConnectionString(context);
-
+            //var str2 = Conexion.GetDataApi("/agents");
             using (SqlConnection conn = new SqlConnection(str))
             {
                 await conn.OpenAsync();
                 var text = "Select * From Agent";
-
-
                 using (SqlCommand cmd = new SqlCommand(text, conn))
                 {
+                    // Execute the command and log the # rows affected.
+                    //  var rows = await cmd.ExecuteNonQueryAsync();
+                    //   log.LogInformation("rows were updated");
                     using (var reader = await cmd.ExecuteReaderAsync())
                     {
                         while (await reader.ReadAsync())
                         {
-                            response.Add(MapToActivities(reader));
+                            response.Add(MapToAgent(reader));
                         }
                     }
+                    //log.LogInformation();
 
                 }
                 return response;
             }
 
         }
+        */
+
+        
 
         // obtener los datos de los Grupos
+
+            /*
         public static async Task<List<object>> GetAllGroups(ExecutionContext context)
         {
 
@@ -113,44 +121,8 @@ namespace TicketToolServices.Repository
 
         }
 
-        // obtener todos los datos de SFAgentGroupDetail
-        /*
-        public static async Task<List<object>> GetAllGroupDetail(ExecutionContext context)
-        {
-            //List<SFAgentGroupDetail> items = new List<SFAgentGroupDetail>();
-            // string groupID = null;
-            SFAgentGroupDetail groupdetail;
-            var response = new List<object>();
-            var str = Conexion.GetConnectionString(context);
-
-            using (SqlConnection conn = new SqlConnection(str))
-            {
-                await conn.OpenAsync();
-                //var text = Items.FirstOrDefault(t => t.groupID == groupID);
-                var text = "Select * from SFAgentGroupDetail where groupID = groupdetail.groupID";
-
-                //var text2 = Items.FirstOrDefault("Select * from SFAgentGroupDetail where groupID = groupID"); 
-
-                using (SqlCommand cmd = new SqlCommand(text, conn))
-                {
-                    // Execute the command and log the # rows affected.
-                    //  var rows = await cmd.ExecuteNonQueryAsync();
-                    //   log.LogInformation("rows were updated");
-
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            response.Add(MapToGroupsDetail(reader));
-                        }
-                    }
-                    //log.LogInformation();
-
-                }
-                return response;
-            }
-
-        }*/
+        */
+      
 
 
         // obtener todos los datos de SFAgentGroupDetail por ID
@@ -181,6 +153,8 @@ namespace TicketToolServices.Repository
 
 
         // otro intento grupo por id
+
+            /*
         public static async Task<List<object>> GetAllGroups2intento(ExecutionContext context)
         {
 
@@ -206,7 +180,7 @@ namespace TicketToolServices.Repository
                 return response;
             }
 
-        }
+        }*/
 
 
     }

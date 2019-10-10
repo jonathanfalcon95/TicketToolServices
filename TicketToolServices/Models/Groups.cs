@@ -6,15 +6,16 @@ namespace TicketToolServices.Models
 {
     class Groups
     {
+        /*
         public Groups()
         {
             SFAgentGroup = new List<SFAgentGroup>();
             SFAgentGroupDetail = new List<SFAgentGroupDetail>();
-        }
+        */
         public string groupID { get; set; }
         public string groupDescription { get; set; }
-        public List<SFAgentGroup> SFAgentGroup { get; }
-        public List<SFAgentGroupDetail> SFAgentGroupDetail { get; }
+        /*public List<SFAgentGroup> SFAgentGroup { get; }
+        public List<SFAgentGroupDetail> SFAgentGroupDetail { get; }*/
 
     }
 }

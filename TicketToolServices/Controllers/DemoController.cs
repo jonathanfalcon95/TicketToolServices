@@ -21,6 +21,11 @@ using System.Web.Http;
 using TicketToolServices.Models;
 using TicketToolServices.Repository;
 
+// ultimos
+using System.Net;
+//using Newtonsoft.Json;
+using System.Text;
+using System.Net.Http.Headers;
 
 namespace TicketToolServices.Controllers
 {
@@ -28,17 +33,19 @@ namespace TicketToolServices.Controllers
     public static class DemoController 
     {
         
-
+        /*
         [FunctionName("Todo_Get2")]
-        public static async Task<ActionResult<object>> Get22([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "agents")] HttpRequest req, ILogger log, ExecutionContext context)
+        public static async Task<HttpResponseMessage> Get22([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "agents")] HttpRequest req, ILogger log, ExecutionContext context)
         {
             // return await DemoRepository.SelectAsync(context);
 
             var response = Conexion.GetDataApi("/agents");
+           // var prueba = JsonConvert.SerializeObject(response);
 
             if (response.IsSuccessStatusCode)
             {
 
+                // var dataObjects = response.Content.ReadAsAsync<IEnumerable<dynamic>>().Result;
                 var dataObjects = response.Content.ReadAsAsync<IEnumerable<dynamic>>().Result;
                 {
                     foreach (var item in dataObjects)
@@ -47,43 +54,49 @@ namespace TicketToolServices.Controllers
                         {
 
                             agentID = item.agentID,
-
+                            agentDescription = item.agentDescription,
                         };
+
+                        //JsonConvert.SerializeObject(agent);
                     }
+                    
 
                 }
 
             }
 
-            return await DemoRepository.SelectAsync(context);
-        }
-
-
-        [FunctionName("All_Groups")]
-        public static async Task<ActionResult<object>> GetGroups([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "groups")] HttpRequest req, ILogger log, ExecutionContext context)
-        {
-            var response = Conexion.GetDataApi("/groups");
-
-            if (response.IsSuccessStatusCode)
+            return await Task<HttpResponseMessage>.Factory.StartNew(() =>
             {
-                var dataObjects = response.Content.ReadAsAsync<IEnumerable<dynamic>>().Result;
-                {
-                    foreach (var item in dataObjects)
-                    {
-                        var groups = new Groups()
-                        {
-                            groupID = item.groupID,
-                        };
-                    }
+                //return Request.CreateResponse(HttpStatusCode.OK, data);
+                return response;
+            });
 
-                }
 
-            }
-            return await DemoRepository.GetAllGroups(context);
-        }
+
+            //return response;
+            /*
+            return new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent(jsonToReturn, Encoding.UTF8, "application/json")
+            };*/
+
+
+            //return response.Content.ReadAsStringAsync().Result;
+
+            //return JsonConvert.SerializeObject(response);
+
+            //return await DemoRepository.SelectAsync(context);
+
+            //return await response.Content.ReadAsStringAsync();
+        //}
+        
+        
+
+
+       
 
          // funciona desde la base de datos
-         
+         /*
         [FunctionName("Todo_GetById")]
         public static async Task<IActionResult> GetByIdGroups(
         [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "groups/{groupID}")]
@@ -103,69 +116,54 @@ namespace TicketToolServices.Controllers
                 // if (todos.Count() == 0) return new NotFoundResult();
                 return new OkObjectResult(todos);
             }
-        }
-
-
-        //metodo get por Id ahora por Freshdesk
-        
-        /*
-
-        [FunctionName("Todo_GetById")]
-        public static async Task<IActionResult> GetByIdGroupsFreshdesk(
-        [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "groups/{groupID}")]
-        HttpRequest req,
-        ILogger log,
-        ExecutionContext context,
-        string groupID)
-        {
-            //string connStr = ConfigurationManager.ConnectionStrings[GetDataApi("/groups/{groupID}")].ConnectionString;
-            //string conn = ConfigurationManager.ConnectionStrings["response"].ConnectionString;
-
-            var response = Conexion.GetDataApi("/groups/{groupID}");
-            //var str = Conexion.GetConnectionString(context);
-            //string response = ConfigurationManager.ConnectionStrings["DBConnectionString"].ConnectionString;
-
-            //using (var connection = new SqlConnection(response))
-            using (var connection = new SqlConnection("response"))
-            {
-                //var dataObjects = response.Content.ReadAsAsync<IEnumerable<SFAgentGroupDetail>>().Result;
-                connection.Open();
-
-                //var todos = await connection.QueryAsync<SFAgentGroupDetail>("select groupID, groupName, agentID, agentName, convert(date,date) as date,hours from dbo.SFAgentGroupDetail where groupID = @groupID", new { groupID });
-                var todos = await connection.QueryAsync<SFAgentGroupDetail>("select * from dbo.SFAgentGroupDetail where groupID = @groupID", new { groupID });
-                // if (todos.Count() == 0) return new NotFoundResult();
-                return new OkObjectResult(todos);
-            }
-
-
-        }
+        }  
         */
 
-        
+        // otro intento
 
-        // nuevo intento
-        /*
-        [FunctionName("GetGroupsDetailbyId")]
-        public static async Task<ActionResult<object>> GetGroupsDetailbyId([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "groups/{groupID}")] HttpRequest req, ILogger log, ExecutionContext context)
+        [FunctionName("GetAgents")]
+        public static async Task<HttpResponseMessage> GetAgents([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "agents")] HttpRequest req, ILogger log, ExecutionContext context)
         {
-            var response = Conexion.GetDataApi("/groups/{groupID}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                var dataObjects = response.Content.ReadAsAsync<IEnumerable<dynamic>>().Result;
+                using (var httpClient = new HttpClient())
                 {
-                    foreach (var item in dataObjects)
+                    using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://tmconsulting.freshdesk.com/api/v2/agents"))
                     {
-                        var groupsdetail = new SFAgentGroupDetail()
-                        {
-                            groupID = item.groupID,
-                        };
+                        var base64authorization = Convert.ToBase64String(Encoding.ASCII.GetBytes("UNGq0cadwojfirXm6U7o:X"));
+                        request.Headers.TryAddWithoutValidation("Authorization", $"Basic {base64authorization}");
+
+                        //request.Headers.GetValues("application/json");
+                        
+                        var result = await httpClient.SendAsync(request);
+
+                        return result;
                     }
-
                 }
+            
+            
+        }
 
+        // grupos
+        [FunctionName("GetGroup")]
+        public static async Task<HttpResponseMessage> GetGroup([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "groups")] HttpRequest req, ILogger log, ExecutionContext context)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                using (var request = new HttpRequestMessage(new HttpMethod("GET"), "https://tmconsulting.freshdesk.com/api/v2/groups"))
+                {
+                    var base64authorization = Convert.ToBase64String(Encoding.ASCII.GetBytes("UNGq0cadwojfirXm6U7o:X"));
+                    request.Headers.TryAddWithoutValidation("Authorization", $"Basic {base64authorization}");
+
+                    //request.Headers.GetValues("application/json");
+
+                    var result = await httpClient.SendAsync(request);
+
+                    return result;
+                }
             }
-            return await DemoRepository.GetAllGroups2intento(context);
-        }*/
+
+
+        }
+
+
     }
 }
