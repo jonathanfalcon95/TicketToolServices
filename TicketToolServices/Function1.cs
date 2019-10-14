@@ -7,25 +7,17 @@ namespace TicketToolServices
 {
     public static class FunctionTimmer
     {
-
-        [FunctionName("functionTicket")]
-        public static void Run([TimerTrigger("0 */5 * * * *")]TimerInfo myTimer, ILogger log)
-        {
-        }
-       
-        [FunctionName("Function1")]
-        public static void Function1([TimerTrigger("0 */5 * * * *")]TimerInfo myTimer, ILogger log)
-        {
-
-            log.LogInformation($"C# Timer trigger function executed at: {DateTime.Now}");
-        }
-        [FunctionName("FunctionC")]
+        [FunctionName("Function")]
         public static void FunctionC([TimerTrigger("0 */5 * * * *")]TimerInfo myTimer, ILogger log, ExecutionContext context)
         {
             log.LogInformation($"C# Timer trigger function2 executed at: {DateTime.Now}");
+            FunctionTickets Tickets = new FunctionTickets();
+            Tickets.TicketsFunction(context, "/tickets");
+
             ConversationsController Conversation = new ConversationsController();
             Conversation.ConversationsUpdate(context, "/tickets");
         }
+       
     }
 
 }
