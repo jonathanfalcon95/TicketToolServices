@@ -6,6 +6,7 @@ namespace TicketToolServices.Models
 {
     class Tickets
     {
+
         public int TicketID { get; set; }
         public string subject { get; set; }
         public string description { get; set; }//descript
@@ -55,3 +56,5 @@ namespace TicketToolServices.Models
         public int estimatedHourAgent { get; set; }
     }
 }
+
+

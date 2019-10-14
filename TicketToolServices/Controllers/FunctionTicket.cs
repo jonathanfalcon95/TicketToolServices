@@ -19,7 +19,7 @@ namespace TicketToolServices.Controllers
     public static class FunctionTickets
     {
         //Inicio Function
-        [FunctionName("Function1")]
+        [FunctionName("functionTicket")]
         public static async Task<ActionResult<object>> TicketsFunction([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "tickets")] HttpRequest req, ILogger log, ExecutionContext context)
         {
             var DateExecute = await SFControlDataRepository.SelectAsync(context);
