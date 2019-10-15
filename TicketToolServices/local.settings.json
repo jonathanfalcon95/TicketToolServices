@@ -10,6 +10,6 @@
     "CORSCredentials": false  
   },
   "ConnectionStrings": {
-    "SQLConnectionString": "Server=localhost\\SQLEXPRESS;Database=ticketingtool;Trusted_Connection=True;"
+    "SQLConnectionString": "Server=localhost\\SQLEXPRESS01;Database=ticketingtool;Trusted_Connection=True;"
   }
 }
