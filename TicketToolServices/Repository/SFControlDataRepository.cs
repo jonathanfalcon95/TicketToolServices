@@ -21,26 +21,26 @@ namespace TicketToolServices.Repository
             };
             return Model;
         }
-        public static async Task<dynamic> SelectAsync(ExecutionContext context)
+        public static string SelectAsync(ExecutionContext context)
         {
-            var response3 = new List<dynamic>();
+            string response = "";
             var str = Conexion.GetConnectionString(context);
             using (SqlConnection conn = new SqlConnection(str))
             {
-                await conn.OpenAsync();
+                conn.Open();
                 var text = "SELECT lastExecutedDate FROM dbo.SFControlData";
                 using (SqlCommand cmd = new SqlCommand(text, conn))
                 {
-                    using (var reader = await cmd.ExecuteReaderAsync())
+                    using (var reader = cmd.ExecuteReader())
                     {
-                        while (await reader.ReadAsync())
+                        while (reader.Read())
                         {
-                            response3.Add(MapToActivities(reader));
+                            response =(string)reader[0];
                         }
                     }
 
                 }
-                return response3;
+                return response;
             }
 
         }

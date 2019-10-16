@@ -1,4 +1,5 @@
 ﻿using Microsoft.Azure.WebJobs;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
@@ -33,7 +34,7 @@ namespace TicketToolServices.Repository
             };
             return Model;
         }
-        public static async Task Post(Conversations conversation, ExecutionContext context)
+        public static async Task Post(Conversations conversation, ExecutionContext context, ILogger log, bool debuging)
         {
             var str = Conexion.GetConnectionString(context);
             string to_emails = string.Join(",", conversation.to_emails.ToArray());
@@ -62,6 +63,10 @@ namespace TicketToolServices.Repository
                     cmd.Parameters.Add(new SqlParameter("@updated_at", conversation.updated_at));
                     await sql.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
+                    if (debuging)
+                    {
+                        log.LogInformation("SP_Ticket executed on Conversation " + conversation.id);
+                    }
                     return;
                 }
             }

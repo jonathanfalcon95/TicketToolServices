@@ -4,7 +4,7 @@ using System.Text;
 
 namespace TicketToolServices.Models
 {
-    class Conversations
+    public class Conversations
     {
         public string body_text { get; set; }
         public long? id { get; set; }

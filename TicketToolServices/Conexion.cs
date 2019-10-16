@@ -36,9 +36,6 @@ namespace TicketToolServices
 
         public static  HttpResponseMessage GetDataApi(string route, string urlParameters="")
         {
-
-
-
             //InstanciaHttpClient
             HttpClient client = new HttpClient();
 
@@ -50,15 +47,11 @@ namespace TicketToolServices
             string yourpwd = "X";
 
             //Authorization al API
-
-
             client.DefaultRequestHeaders.Authorization =
               new AuthenticationHeaderValue(
                   "Basic", Convert.ToBase64String(
                       System.Text.ASCIIEncoding.ASCII.GetBytes(
                          $"{yourusername}:{yourpwd}")));
-
-
 
             client.DefaultRequestHeaders.Accept.Add(
             new MediaTypeWithQualityHeaderValue("application/json"));
@@ -67,9 +60,6 @@ namespace TicketToolServices
             HttpResponseMessage response =  client.GetAsync(urlParameters).Result;
 
             return response;
-           
         }
     }
-
-
 }

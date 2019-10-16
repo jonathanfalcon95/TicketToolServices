@@ -53,7 +53,7 @@ namespace TicketToolServices.Models
         public DateTime? estimatedEndDate { get; set; }
         public DateTime? realStartDate { get; set; }
         public DateTime? realEndDate { get; set; }
-        public int estimatedHourAgent { get; set; }
+        public int? estimatedHourAgent { get; set; }
     }
 }
 
